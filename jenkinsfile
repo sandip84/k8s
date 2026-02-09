@@ -1,21 +1,21 @@
-// pipeline {
-//   agent any
-
-//   parameters {
-//     string(name: 'IMAGE_TAG', defaultValue: '', description: 'ECR tag produced by CI (example: git-fea78db or 123)')
-//     choice(name: 'ENV', choices: ['kind'], description: 'Target cluster/env (extend later: dev/stage/prod)')
-//     booleanParam(name: 'REFRESH_ECR_PULL_SECRET', defaultValue: true, description: 'Refresh ecr-secret in the target namespace')
-//   }
-@Library('jenkins-shared-lib') _
 pipeline {
-  agent {
-    kubernetes {
-      yaml javaKanikoAgent(
-        mavenImage: "maven:3.9.6-eclipse-temurin-17",
-        kanikoImage: "gcr.io/kaniko-project/executor:debug"
-      )
-    }
+  agent any
+
+  parameters {
+    string(name: 'IMAGE_TAG', defaultValue: '20', description: 'ECR tag produced by CI (example: git-fea78db or 123)')
+    choice(name: 'ENV', choices: ['kind'], description: 'Target cluster/env (extend later: dev/stage/prod)')
+    booleanParam(name: 'REFRESH_ECR_PULL_SECRET', defaultValue: true, description: 'Refresh ecr-secret in the target namespace')
   }
+// @Library('jenkins-shared-lib') _
+// pipeline {
+//   agent {
+//     kubernetes {
+//       yaml javaKanikoAgent(
+//         mavenImage: "maven:3.9.6-eclipse-temurin-17",
+//         kanikoImage: "gcr.io/kaniko-project/executor:debug"
+//       )
+//     }
+//   }
   environment {
     GIT_REPO    = "https://github.com/sandip84/k8s.git"
     GIT_BRANCH  = "main"   
