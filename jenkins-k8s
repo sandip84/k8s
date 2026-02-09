@@ -8,6 +8,8 @@ pipeline {
   }
 
   environment {
+    GIT_REPO    = "https://github.com/sandip84/k8s.git"
+    GIT_BRANCH  = "main"   
     AWS_REGION  = "us-east-1"
     AWS_ACCOUNT = "168400405045"
     ECR_REPO    = "java-app"
@@ -21,7 +23,8 @@ pipeline {
 
     stage('Checkout CD Repo') {
       steps {
-        checkout scm
+        git branch: "${GIT_BRANCH}",
+            url: "${GIT_REPO}"
       }
     }
 
@@ -35,7 +38,7 @@ pipeline {
       }
     }
 
-    stage('Verify Image Exists in ECR') {
+    stage('Verify Image Exists in  ECR') {
       steps {
         sh """
           aws ecr describe-images \
