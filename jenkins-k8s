@@ -9,7 +9,7 @@ pipeline {
     }
   }
   environment {
-    // ===== GIT =====
+    // ===== GIT ======
     GIT_REPO = "https://github.com/sandip84/simple-java-maven-app.git"
     GIT_BRANCH = "sandy"
 
