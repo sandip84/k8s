@@ -23,7 +23,6 @@ pipeline {
     AWS_ACCOUNT = "168400405045"
     ECR_REPO    = "java-app"
     ECR_URI     = "${AWS_ACCOUNT}.dkr.ecr.${AWS_REGION}.amazonaws.com/${ECR_REPO}"
-
     K8S_NAMESPACE = "java-app"          // change if you use default
     APP_NAME      = "java-app"          // Deployment name
   }
@@ -53,7 +52,7 @@ pipeline {
           aws ecr describe-images \
             --region ${AWS_REGION} \
             --repository-name ${ECR_REPO} \
-            --image-ids imageTag=${IMAGE_TAG} \
+            --image-ids imageTag=${params.IMAGE_TAG} \
             --query 'imageDetails[0].imageDigest' \
             --output text
         """
@@ -91,7 +90,7 @@ pipeline {
           mkdir -p rendered
 
           # Render deployment with correct image without modifying tracked file
-          sed "s|REPLACE_IMAGE|${ECR_URI}:${IMAGE_TAG}|g" k8s/deployment.yaml > rendered/deployment.yaml
+          sed "s|REPLACE_IMAGE|${ECR_URI}:${params.IMAGE_TAG}|g" k8s/deployment.yaml > rendered/deployment.yaml
 
           # Copy other manifests as-is
           cp k8s/service.yaml rendered/service.yaml
