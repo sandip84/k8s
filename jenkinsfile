@@ -94,7 +94,7 @@ pipeline {
       steps {
         container('tools') {
           sh """
-            kubectl apply -f k8s/namespace.yaml
+            kubectl apply -f namespace.yaml
           """
         }  
       }
@@ -125,11 +125,11 @@ pipeline {
           mkdir -p rendered
 
           # Render deployment with correct image without modifying tracked file
-          sed "s|REPLACE_IMAGE|${ECR_URI}:${params.IMAGE_TAG}|g" k8s/deployment.yaml > rendered/deployment.yaml
+          sed "s|REPLACE_IMAGE|${ECR_URI}:${params.IMAGE_TAG}|g" deployment.yaml > rendered/deployment.yaml
 
           # Copy other manifests as-is
-          cp k8s/service.yaml rendered/service.yaml
-          cp k8s/namespace.yaml rendered/namespace.yaml
+          cp service.yaml rendered/service.yaml
+          cp namespace.yaml rendered/namespace.yaml
         """
       }
     }
