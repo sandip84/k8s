@@ -12,3 +12,6 @@ rules:
 - apiGroups: [""]
   resources: ["services"]
   verbs: ["*"]
+- apiGroups: [""]
+  resources: ["secrets"]
+  verbs: ["get", "list", "create", "update", "patch", "delete"]
