@@ -6,6 +6,9 @@ pipeline {
     containers:
     - name: tools
       image: ghcr.io/sandip84/jenkins-agent-tools:v0.1.1
+      command:
+      - cat
+      tty: true      
   """
     }
   }
