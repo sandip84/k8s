@@ -53,7 +53,7 @@ pipeline {
     AWS_ACCOUNT = "168400405045"
     ECR_REPO    = "java-app"
     ECR_URI     = "${AWS_ACCOUNT}.dkr.ecr.${AWS_REGION}.amazonaws.com/${ECR_REPO}"
-    K8S_NAMESPACE = "java-app"          // change if you use default
+    K8S_NAMESPACE = "java-app-ns"          // change if you use default
     APP_NAME      = "java-app"          // Deployment name
   }
 
