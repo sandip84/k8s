@@ -92,26 +92,30 @@ pipeline {
 
     stage('Create Namespace (YAML)') {
       steps {
-        sh """
-          kubectl apply -f k8s/namespace.yaml
-        """
+        container('tools') {
+          sh """
+            kubectl apply -f k8s/namespace.yaml
+          """
+        }  
       }
     }
 
     stage('Refresh ECR Pull Secret (Kind)') {
       when { expression { return params.REFRESH_ECR_PULL_SECRET } }
       steps {
-        sh """
-          TOKEN=\$(aws ecr get-login-password --region ${AWS_REGION})
+        container('tools') {
+          sh """
+            TOKEN=\$(aws ecr get-login-password --region ${AWS_REGION})
 
-          kubectl delete secret ecr-secret -n ${K8S_NAMESPACE} --ignore-not-found
+            kubectl delete secret ecr-secret -n ${K8S_NAMESPACE} --ignore-not-found
 
-          kubectl create secret docker-registry ecr-secret \
-            -n ${K8S_NAMESPACE} \
-            --docker-server=${AWS_ACCOUNT}.dkr.ecr.${AWS_REGION}.amazonaws.com \
-            --docker-username=AWS \
-            --docker-password="\$TOKEN"
-        """
+            kubectl create secret docker-registry ecr-secret \
+              -n ${K8S_NAMESPACE} \
+              --docker-server=${AWS_ACCOUNT}.dkr.ecr.${AWS_REGION}.amazonaws.com \
+              --docker-username=AWS \
+              --docker-password="\$TOKEN"
+          """
+        }
       }
     }
 
@@ -132,21 +136,25 @@ pipeline {
 
     stage('Apply to Kubernetes') {
       steps {
-        sh """
-          kubectl apply -f rendered/namespace.yaml
-          kubectl apply -f rendered/deployment.yaml
-          kubectl apply -f rendered/service.yaml
-        """
+        container('tools') {
+          sh """
+            kubectl apply -f rendered/namespace.yaml
+            kubectl apply -f rendered/deployment.yaml
+            kubectl apply -f rendered/service.yaml
+          """
+        }
       }
     }
 
     stage('Wait for Rollout') {
       steps {
-        sh """
-          kubectl rollout status deployment/${APP_NAME} -n ${K8S_NAMESPACE} --timeout=180s
-          kubectl get pods -n ${K8S_NAMESPACE} -o wide
-          kubectl get svc  -n ${K8S_NAMESPACE} -o wide
-        """
+        container('tools') {
+          sh """
+            kubectl rollout status deployment/${APP_NAME} -n ${K8S_NAMESPACE} --timeout=180s
+            kubectl get pods -n ${K8S_NAMESPACE} -o wide
+            kubectl get svc  -n ${K8S_NAMESPACE} -o wide
+          """
+        }
       }
     }
   }
