@@ -3,6 +3,7 @@ pipeline {
     kubernetes {
       yaml """
   spec:
+    serviceAccountName: jenkins-deployer
     containers:
     - name: tools
       image: ghcr.io/sandip84/jenkins-agent-tools:v0.1.3
