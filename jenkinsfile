@@ -1,5 +1,14 @@
 pipeline {
-  agent any
+  agent {
+    kubernetes {
+      yaml """
+  spec:
+    containers:
+    - name: tools
+      image: ghcr.io/sandip84/jenkins-agent-tools:v1.0.0
+  """
+    }
+  }
 
   parameters {
     string(name: 'IMAGE_TAG', defaultValue: '20', description: 'ECR tag produced by CI (example: git-fea78db or 123)')
