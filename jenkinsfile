@@ -5,7 +5,7 @@ pipeline {
   spec:
     containers:
     - name: tools
-      image: ghcr.io/sandip84/jenkins-agent-tools:v0.1.1
+      image: ghcr.io/sandip84/jenkins-agent-tools:v0.1.2
       command:
       - cat
       tty: true      
