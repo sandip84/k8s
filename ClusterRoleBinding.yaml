@@ -5,7 +5,7 @@ metadata:
 subjects:
 - kind: ServiceAccount
   name: jenkins-deployer
-  namespace: java-app-nc
+  namespace: jenkins
 roleRef:
   kind: ClusterRole
   name: jenkins-deployer
