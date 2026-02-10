@@ -60,15 +60,17 @@ pipeline {
     }
 
     stage('Verify Image Exists in  ECR') {
-      steps {
-        sh """
-          aws ecr describe-images \
-            --region ${AWS_REGION} \
-            --repository-name ${ECR_REPO} \
-            --image-ids imageTag=${params.IMAGE_TAG} \
-            --query 'imageDetails[0].imageDigest' \
-            --output text
-        """
+      container('tools') {
+        steps {
+          sh """
+            aws ecr describe-images \
+              --region ${AWS_REGION} \
+              --repository-name ${ECR_REPO} \
+              --image-ids imageTag=${params.IMAGE_TAG} \
+              --query 'imageDetails[0].imageDigest' \
+              --output text
+          """
+        }
       }
     }
 
