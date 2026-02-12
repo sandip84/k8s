@@ -17,6 +17,6 @@ spec:
         - name: ecr-secret
       containers:
       - name: java-app
-        image: REPLACE_IMAGE
+        image: nginx
         ports:
         - containerPort: 8080

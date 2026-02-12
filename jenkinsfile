@@ -107,15 +107,14 @@ pipeline {
       steps {
         container('tools') {
           sh """
-            TOKEN=\$(aws ecr get-login-password --region ${AWS_REGION})
-
+            #TOKEN=\$(aws ecr get-login-password --region ${AWS_REGION})
             kubectl delete secret ecr-secret -n ${K8S_NAMESPACE} --ignore-not-found
-
             kubectl create secret docker-registry ecr-secret \
               -n ${K8S_NAMESPACE} \
               --docker-server=${AWS_ACCOUNT}.dkr.ecr.${AWS_REGION}.amazonaws.com \
               --docker-username=AWS \
-              --docker-password="\$TOKEN"
+              --docker-password-stdin"
+              --dry-run=client -o yaml | kubectl apply -f -
           """
         }
       }
