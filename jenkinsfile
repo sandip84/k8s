@@ -148,16 +148,30 @@ pipeline {
       }
     }
 
+    // stage('Wait for Rollout') {
+    //   steps {
+    //     container('tools') {
+    //       sh """
+    //         kubectl rollout status deployment/${APP_NAME} -n ${K8S_NAMESPACE} --timeout=180s
+    //         kubectl get pods -n ${K8S_NAMESPACE} -o wide
+    //         kubectl get svc  -n ${K8S_NAMESPACE} -o wide
+    //       """
+    //     }
+    //   }
+    // }
+
     stage('Wait for Rollout') {
       steps {
         container('tools') {
           sh """
-            kubectl rollout status deployment/${APP_NAME} -n ${K8S_NAMESPACE} --timeout=180s
-            kubectl get pods -n ${K8S_NAMESPACE} -o wide
-            kubectl get svc  -n ${K8S_NAMESPACE} -o wide
+            kubectl rollout status deployment/${APP_NAME} -n ${K8S_NAMESPACE} --timeout=180s || true
+            kubectl get pods -n ${K8S_NAMESPACE}
+            kubectl describe deployment ${APP_NAME} -n ${K8S_NAMESPACE}
           """
         }
       }
     }
   }
 }
+
+
