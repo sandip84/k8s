@@ -165,7 +165,7 @@ pipeline {
           mkdir -p rendered
 
           # Render deployment with correct image without modifying tracked file
-          sed "s|REPLACE_IMAGE|${ECR_URI}:${params.IMAGE_TAG}|g" deployment.yaml > rendered/deployment.yaml
+          sed "s|nginx|${ECR_URI}:${params.IMAGE_TAG}|g" deployment.yaml > rendered/deployment.yaml
 
           # Copy other manifests as-is
           cp service.yaml rendered/service.yaml
