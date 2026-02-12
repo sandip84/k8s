@@ -113,7 +113,7 @@ pipeline {
               -n ${K8S_NAMESPACE} \
               --docker-server=${AWS_ACCOUNT}.dkr.ecr.${AWS_REGION}.amazonaws.com \
               --docker-username=AWS \
-              --docker-password-stdin"
+              --docker-password-stdin \
               --dry-run=client -o yaml | kubectl apply -f -
           """
         }
