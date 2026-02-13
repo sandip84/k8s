@@ -1,19 +1,51 @@
-@Library('jenkins-shared-lib') _
 pipeline {
   agent {
     kubernetes {
-      yaml jenkins-agent-tools(
-        toolImage: "ghcr.io/sandip84/jenkins-agent-tools:v0.1.3"
-      )
+      yaml """
+  spec:
+    serviceAccountName: jenkins-deployer
+    containers:
+    - name: tools
+      image: ghcr.io/sandip84/jenkins-agent-tools:v0.1.3
+      imagePullPolicy: Always
+      command:
+      - cat
+      tty: true    
+      env:    
+      - name: AWS_ACCESS_KEY_ID
+        valueFrom:
+          secretKeyRef:
+            name: aws-creds
+            key: AWS_ACCESS_KEY_ID
+      - name: AWS_SECRET_ACCESS_KEY
+        valueFrom:
+          secretKeyRef:
+            name: aws-creds
+            key: AWS_SECRET_ACCESS_KEY
+      - name: AWS_REGION
+        valueFrom:
+          secretKeyRef:
+            name: aws-creds
+            key: AWS_REGION        
+  """
     }
   }
 
   parameters {
-    string(name: 'IMAGE_TAG', defaultValue: '11', description: 'ECR tag produced by CI (example: git-fea78db or 123)')
+    string(name: 'IMAGE_TAG', defaultValue: '21', description: 'ECR tag produced by CI (example: git-fea78db or 123)')
     choice(name: 'ENV', choices: ['kind'], description: 'Target cluster/env (extend later: dev/stage/prod)')
     booleanParam(name: 'REFRESH_ECR_PULL_SECRET', defaultValue: true, description: 'Refresh ecr-secret in the target namespace')
   }
-
+// @Library('jenkins-shared-lib') _
+// pipeline {
+//   agent {
+//     kubernetes {
+//       yaml javaKanikoAgent(
+//         mavenImage: "maven:3.9.6-eclipse-temurin-17",
+//         kanikoImage: "gcr.io/kaniko-project/executor:debug"
+//       )
+//     }
+//   }
   environment {
     GIT_REPO    = "https://github.com/sandip84/k8s.git"
     GIT_BRANCH  = "main"   
