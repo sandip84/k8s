@@ -13,6 +13,7 @@ spec:
       labels:
         app: java-app
     spec:
+      serviceAccountName: jenkins-deployer
       imagePullSecrets:
         - name: ecr-secret
       containers:
