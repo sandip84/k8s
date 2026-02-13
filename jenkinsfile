@@ -2,7 +2,7 @@
 pipeline {
   agent {
     kubernetes {
-      yaml jenkins-agent-tools(
+      yaml jenkinsAgentTools(
         toolImage: "ghcr.io/sandip84/jenkins-agent-tools:v0.1.3"
       )
     }
