@@ -18,6 +18,6 @@ spec:
         - name: ecr-secret
       containers:
       - name: java-app
-        image: nginx
+        image: 168400405045.dkr.ecr.us-east-1.amazonaws.com/java-app:latest
         ports:
         - containerPort: 9090
