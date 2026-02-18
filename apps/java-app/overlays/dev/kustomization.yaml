@@ -7,4 +7,4 @@ resources:
 images:
   - name: 168400405045.dkr.ecr.us-east-1.amazonaws.com/java-app
     newName: 168400405045.dkr.ecr.us-east-1.amazonaws.com/java-app
-    newTag: d9f6016
+    newTag: 1b7afa6
